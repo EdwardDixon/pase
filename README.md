@@ -30,11 +30,13 @@ The PASE+ parameters used in our most recently [published work](http://veu.talp.
 ```
 from pase.models.frontend import wf_builder
 pase = wf_builder('cfg/frontend/PASE+.cfg').eval()
+
+# If you dont have weights for your chosen cfg, feel free to skip this step
 pase.load_pretrained('FE_e199.ckpt', load_last=True, verbose=True)
 
 # Now we can forward waveforms as Torch tensors
 import torch
-x = torch.randn(1, 1, 100000) # example with random noise to check shape
+x = torch.randn(1, 1, 100000) # example with random noise to check our tensors are the right shape
 # y size will be (1, 256, 625), which are 625 frames of 256 dims each
 y = pase(x)
 ```
@@ -64,7 +66,7 @@ To make the dataset configuration file the following files have to be provided:
 
 An example of each of these files can be found in the `data/` folder of the repo. Build them based on your data files.
 
-_NOTE: The `filename2spkclass` dictionary is required to create a train/valid/test split which holds out some speakers from training, such that
+_NOTE: The `filename2spkclass` dictionary is required to create a train/valid/test split which **holds out some speakers from training**, such that
 self-supervised training validation tracks the workers' losses with unseen identities (thus to truly generalize). Those labels,
 however, are not used during training for this is an unsupervised framework._
 
